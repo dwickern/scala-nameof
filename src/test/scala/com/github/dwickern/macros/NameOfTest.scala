@@ -21,6 +21,19 @@ class NameOfTest extends FunSuite with Matchers {
     nameOf(localVal) should equal ("localVal")
   }
 
+  test("symbolic names") {
+    nameOf(???) should equal ("???")
+
+    def `multi word name` = ???
+    nameOf(`multi word name`) should equal ("multi word name")
+
+    def 你好 = ???
+    nameOf(你好) should equal ("你好")
+
+    def `!@#$%^&*` = ???
+    nameOf(`!@#$%^&*`) should equal ("!@#$%^&*")
+  }
+
   test("function") {
     def func1(x: Int): String = ???
     nameOf(func1 _) should equal ("func1")
