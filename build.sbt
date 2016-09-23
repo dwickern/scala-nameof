@@ -44,7 +44,7 @@ lazy val nameof = crossProject.crossType(CrossType.Pure).in(file("."))
   .settings(
     organization := "com.github.dwickern",
     name := "scala-nameof",
-    version := "1.0-SNAPSHOT"
+    version := "1.0"
   )
 
 lazy val nameofJVM = nameof.jvm
