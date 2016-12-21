@@ -2,7 +2,7 @@ import com.typesafe.sbt.pgp.PgpKeys
 
 lazy val sharedSettings = Seq(
   scalaVersion := "2.11.8",
-  crossScalaVersions := Seq("2.10.6", scalaVersion.value, "2.12.0-RC1"),
+  crossScalaVersions := Seq("2.10.6", scalaVersion.value, "2.12.1"),
   libraryDependencies ++= Seq(
   "org.scalatest" %%% "scalatest" % "3.0.0" % "test",
   "org.scala-lang" % "scala-reflect" % scalaVersion.value
@@ -44,7 +44,7 @@ lazy val nameof = crossProject.crossType(CrossType.Pure).in(file("."))
   .settings(
     organization := "com.github.dwickern",
     name := "scala-nameof",
-    version := "1.0"
+    version := "1.0.1"
   )
 
 lazy val nameofJVM = nameof.jvm
