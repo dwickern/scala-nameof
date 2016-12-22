@@ -1,6 +1,6 @@
 package com.github.dwickern.macros
 
-object NameOf {
+trait NameOf {
   import scala.language.experimental.macros
 
   /**
@@ -38,3 +38,4 @@ object NameOf {
     */
   def nameOfType[T]: String = macro NameOfImpl.nameOfType[T]
 }
+object NameOf extends NameOf
