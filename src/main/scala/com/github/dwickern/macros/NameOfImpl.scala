@@ -3,7 +3,7 @@ package com.github.dwickern.macros
 import scala.annotation.tailrec
 import scala.reflect.macros._
 
-private[macros] object NameOfImpl {
+object NameOfImpl {
   def nameOf(c: Context)(expr: c.Expr[Any]): c.Expr[String] = {
     import c.universe._
 
