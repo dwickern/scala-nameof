@@ -1,7 +1,7 @@
 "nameOf" macro for scala
 ========================
 
-Get the name of an variable, class member, or type as a string--at compile-time!
+Get the name of an variable, function, class member, or type as a string--at compile-time!
 
 Inspired by the [nameof](https://msdn.microsoft.com/en-us/library/dn986596.aspx) operator in C#
 
