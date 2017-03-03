@@ -85,9 +85,9 @@ To publish to your local ivy repository:
 
     sbt +publishLocal
 
-To publish to maven central:
+To publish to maven central (requires authorization):
 
-    sbt +publishSigned
+    sbt release
 
 
 License
