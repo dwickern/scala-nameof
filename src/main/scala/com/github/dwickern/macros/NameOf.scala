@@ -28,7 +28,7 @@ trait NameOf {
   def nameOf[T](expr: T => Any): String = macro NameOfImpl.nameOf
 
   /**
-    * Obtain a type's name as a constant string.
+    * Obtain a type's unqualified name as a constant string.
     *
     * Example usage:
     * {{{
@@ -37,5 +37,16 @@ trait NameOf {
     * }}}
     */
   def nameOfType[T]: String = macro NameOfImpl.nameOfType[T]
+
+  /**
+    * Obtain a type's qualified name as a constant string.
+    *
+    * Example usage:
+    * {{{
+    *   nameOfType[String] => "java.lang.String"
+    *   nameOfType[fully.qualified.ClassName] => "fully.qualified.ClassName"
+    * }}}
+    */
+  def qualifiedNameOfType[T]: String = macro NameOfImpl.qualifiedNameOfType[T]
 }
 object NameOf extends NameOf

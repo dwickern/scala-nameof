@@ -30,4 +30,12 @@ object NameOfImpl {
       c.Expr[String] { Literal(Constant(name)) }.splice
     }
   }
+
+  def qualifiedNameOfType[T](c: Context)(implicit tag: c.WeakTypeTag[T]): c.Expr[String] = {
+    import c.universe._
+    val name = showRaw(tag.tpe.typeSymbol.fullName)
+    reify {
+      c.Expr[String] { Literal(Constant(name)) }.splice
+    }
+  }
 }

@@ -73,6 +73,17 @@ You can also use `nameOfType` to get the unqualified name of a type:
   println("String")
 ```
 
+And `qualifiedNameOfType` to get the qualified name:
+```scala
+  import com.github.dwickern.macros.NameOf._
+
+  println(qualifiedNameOfType[java.lang.String])
+
+  // compiles to:
+
+  println("java.lang.String")
+```
+
 
 Development
 ===========

@@ -85,18 +85,21 @@ class NameOfTest extends FunSuite with Matchers {
   test("class") {
     class RegularClass()
     nameOfType[RegularClass] should equal ("RegularClass")
+    qualifiedNameOfType[RegularClass] should equal ("com.github.dwickern.macros.NameOfTest.RegularClass")
   }
 
   test("case class") {
     case class CaseClass()
     nameOf(CaseClass) should equal ("CaseClass")
     nameOfType[CaseClass] should equal ("CaseClass")
+    qualifiedNameOfType[CaseClass] should equal ("com.github.dwickern.macros.NameOfTest.CaseClass")
   }
 
   test("object") {
     object SomeObject
     nameOf(SomeObject) should equal ("SomeObject")
     nameOfType[SomeObject.type] should equal ("SomeObject")
+    qualifiedNameOfType[SomeObject.type] should equal ("com.github.dwickern.macros.NameOfTest.SomeObject")
   }
 
   test("object/class") {
@@ -104,6 +107,7 @@ class NameOfTest extends FunSuite with Matchers {
       class InnerClass()
     }
     nameOfType[OuterObject.InnerClass] should equal ("InnerClass")
+    qualifiedNameOfType[OuterObject.InnerClass] should equal ("com.github.dwickern.macros.NameOfTest.OuterObject.InnerClass")
   }
 
   test("class/class") {
@@ -111,16 +115,29 @@ class NameOfTest extends FunSuite with Matchers {
       class InnerClass()
     }
     nameOfType[OuterClass#InnerClass] should equal ("InnerClass")
+    qualifiedNameOfType[OuterClass#InnerClass] should equal ("com.github.dwickern.macros.NameOfTest.OuterClass.InnerClass")
   }
 
   test("generic class") {
     class GenericClass[T, U]()
     nameOfType[GenericClass[_, _]] should equal ("GenericClass")
+    qualifiedNameOfType[GenericClass[_, _]] should equal ("com.github.dwickern.macros.NameOfTest.GenericClass")
+  }
+
+  test("primitive type") {
+    nameOfType[Int] should equal ("Int")
+    qualifiedNameOfType[Int] should equal ("scala.Int")
+  }
+
+  test("java type") {
+    nameOfType[java.lang.String] should equal ("String")
+    qualifiedNameOfType[java.lang.String] should equal ("java.lang.String")
   }
 
   test("type alias") {
     type alias = String
     nameOfType[alias] should equal ("String")
+    qualifiedNameOfType[alias] should equal ("java.lang.String")
   }
 
   test("error: this") {
