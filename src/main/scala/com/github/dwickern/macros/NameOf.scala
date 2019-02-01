@@ -15,6 +15,19 @@ trait NameOf {
   def nameOf(expr: Any): String = macro NameOfImpl.nameOf
 
   /**
+    * Obtain an identifier name as a constant string via extension.
+    *
+    * Example usage:
+    * {{{
+    *   val amount = 5
+    *   amount.scalaName => "amount"
+    * }}}
+    */
+  implicit class ScalaNamer(member : Any) {
+    def scalaName : String = macro NameOfImpl.scalaName
+  }
+
+  /**
     * Obtain an identifier name as a constant string.
     *
     * This overload can be used to access an instance method without having an instance of the type.

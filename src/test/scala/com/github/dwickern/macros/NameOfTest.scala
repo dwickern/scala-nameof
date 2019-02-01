@@ -19,6 +19,7 @@ class NameOfTest extends FunSuite with Matchers {
   test("val") {
     val localVal = ""
     nameOf(localVal) should equal ("localVal")
+    localVal.scalaName should equal ("localVal")
   }
 
   test("symbolic names") {
@@ -40,9 +41,11 @@ class NameOfTest extends FunSuite with Matchers {
 
     def func2(x: Int, y: Int): String = ???
     nameOf(func2 _) should equal ("func2")
+    (func2 _).scalaName should equal ("func2")
 
     def func3(x: Double, y: Int, z: String): Boolean = ???
     nameOf(func3 _) should equal ("func3")
+    (func3 _).scalaName should equal ("func3")
   }
 
   test("curried function") {
@@ -59,12 +62,14 @@ class NameOfTest extends FunSuite with Matchers {
     class SomeClass(val foobar: String)
     val myClass = new SomeClass("")
     nameOf(myClass.foobar) should equal ("foobar")
+    myClass.foobar.scalaName should equal ("foobar")
   }
 
   test("this member") {
     new {
       private[this] val foobar = ""
       nameOf(this.foobar) should equal ("foobar")
+      this.foobar.scalaName should equal ("foobar")
     }
   }
 
@@ -91,6 +96,7 @@ class NameOfTest extends FunSuite with Matchers {
   test("case class") {
     case class CaseClass()
     nameOf(CaseClass) should equal ("CaseClass")
+    CaseClass.scalaName should equal ("CaseClass")
     nameOfType[CaseClass] should equal ("CaseClass")
     qualifiedNameOfType[CaseClass] should equal ("com.github.dwickern.macros.NameOfTest.CaseClass")
   }
@@ -98,6 +104,7 @@ class NameOfTest extends FunSuite with Matchers {
   test("object") {
     object SomeObject
     nameOf(SomeObject) should equal ("SomeObject")
+    SomeObject.scalaName should equal ("SomeObject")
     nameOfType[SomeObject.type] should equal ("SomeObject")
     qualifiedNameOfType[SomeObject.type] should equal ("com.github.dwickern.macros.NameOfTest.SomeObject")
   }

@@ -4,6 +4,13 @@ import scala.annotation.tailrec
 import scala.reflect.macros._
 
 object NameOfImpl {
+  def scalaName(c: Context): c.Expr[String] = {
+    import c.universe._
+
+    val Apply(_, List(expr)) = c.prefix.tree
+    nameOf(c)(c.Expr[Any](expr))
+  }
+
   def nameOf(c: Context)(expr: c.Expr[Any]): c.Expr[String] = {
     import c.universe._
 

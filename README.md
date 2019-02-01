@@ -34,6 +34,25 @@ Now you can use `nameOf` to get the name of a variable or class member:
   )
 ```
 
+Alternatively, you can use the extended `.scalaName` property:
+```scala
+  import com.github.dwickern.macros.NameOf._
+
+  case class Person(name: String, age: Int)
+
+  def toMap(person: Person) = Map(
+    person.name.scalaName -> person.name,
+    person.age.scalaName -> person.age
+  )
+
+  // compiles to:
+
+  def toMap(person: Person) = Map(
+    "name" -> person.name,
+    "age" -> person.age
+  )
+```
+
 To get the name of a function:
 ```scala
   import com.github.dwickern.macros.NameOf._
