@@ -2,10 +2,10 @@ import com.typesafe.sbt.pgp.PgpKeys
 
 lazy val sharedSettings = Seq(
   organization := "com.github.dwickern",
-  scalaVersion := "2.11.8",
-  crossScalaVersions := Seq("2.10.6", scalaVersion.value, "2.12.1"),
+  scalaVersion := "2.13.0",
+  crossScalaVersions := Seq(scalaVersion.value, "2.12.1"),
   libraryDependencies ++= Seq(
-  "org.scalatest" %%% "scalatest" % "3.0.0" % "test",
+  "org.scalatest" %%% "scalatest" % "3.1.0" % "test",
   "org.scala-lang" % "scala-reflect" % scalaVersion.value
   ),
   pomExtra := {

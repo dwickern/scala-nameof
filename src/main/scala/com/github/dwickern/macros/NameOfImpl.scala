@@ -1,10 +1,11 @@
 package com.github.dwickern.macros
 
+import scala.language.experimental.macros
+import scala.reflect.macros.blackbox
 import scala.annotation.tailrec
-import scala.reflect.macros._
 
 object NameOfImpl {
-  def nameOf(c: Context)(expr: c.Expr[Any]): c.Expr[String] = {
+  def nameOf(c: blackbox.Context)(expr: c.Expr[Any]): c.Expr[String] = {
     import c.universe._
 
     @tailrec def extract(tree: c.Tree): c.Name = tree match {
@@ -23,7 +24,7 @@ object NameOfImpl {
     }
   }
 
-  def nameOfType[T](c: Context)(implicit tag: c.WeakTypeTag[T]): c.Expr[String] = {
+  def nameOfType[T](c: blackbox.Context)(implicit tag: c.WeakTypeTag[T]): c.Expr[String] = {
     import c.universe._
     val name = showRaw(tag.tpe.typeSymbol.name)
     reify {
@@ -31,7 +32,7 @@ object NameOfImpl {
     }
   }
 
-  def qualifiedNameOfType[T](c: Context)(implicit tag: c.WeakTypeTag[T]): c.Expr[String] = {
+  def qualifiedNameOfType[T](c: blackbox.Context)(implicit tag: c.WeakTypeTag[T]): c.Expr[String] = {
     import c.universe._
     val name = showRaw(tag.tpe.typeSymbol.fullName)
     reify {
