@@ -8,6 +8,7 @@ lazy val sharedSettings = Seq(
   "org.scalatest" %%% "scalatest" % "3.1.0" % "test",
   "org.scala-lang" % "scala-reflect" % scalaVersion.value
   ),
+  publishTo := sonatypePublishToBundle.value,
   pomExtra := {
     <url>https://github.com/dwickern/scala-nameof</url>
     <licenses>
