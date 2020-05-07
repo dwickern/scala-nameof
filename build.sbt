@@ -60,7 +60,7 @@ lazy val root = project.in(file("."))
     PgpKeys.publishSigned := {}
   )
 
-lazy val nameof = crossProject.crossType(CrossType.Pure).in(file("."))
+lazy val nameof = crossProject(JSPlatform, JVMPlatform).crossType(CrossType.Pure).in(file("."))
   .settings(sharedSettings: _*)
   .settings(name := "scala-nameof")
 
