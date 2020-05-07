@@ -1,4 +1,4 @@
-import com.typesafe.sbt.pgp.PgpKeys
+import com.jsuereth.sbtpgp.PgpKeys
 
 lazy val sharedSettings = Seq(
   organization := "com.github.dwickern",
