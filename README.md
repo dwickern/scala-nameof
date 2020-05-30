@@ -53,13 +53,20 @@ Without having an instance of the type:
 ```scala
   import com.github.dwickern.macros.NameOf._
 
-  case class Person(name: String, age: Int)
-
+  case class Person(name: String, age: Int) {
+    def sayHello(other: Person) = s"Hello ${other.name}!"
+  }
+  
   println(nameOf[Person](_.age))
 
   // compiles to:
 
   println("age")
+
+  println(nameOf[Person](_.sayHello(???))
+  
+  //compiles to: 
+  println("sayHello")
 ```
 
 You can also use `nameOfType` to get the unqualified name of a type:
