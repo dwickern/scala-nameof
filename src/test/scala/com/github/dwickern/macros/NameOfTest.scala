@@ -2,6 +2,8 @@ package com.github.dwickern.macros
 
 import org.scalatest.{FunSuite, Matchers}
 
+import scala.language.experimental.macros
+
 class NameOfTest extends FunSuite with Matchers {
   import NameOf._
 
@@ -93,6 +95,15 @@ class NameOfTest extends FunSuite with Matchers {
     nameOf(CaseClass) should equal ("CaseClass")
     nameOfType[CaseClass] should equal ("CaseClass")
     qualifiedNameOfType[CaseClass] should equal ("com.github.dwickern.macros.NameOfTest.CaseClass")
+  }
+
+  test("nested case class member") {
+    case class Nested3CaseClass(member: String)
+    case class Nested2CaseClass(nested3CaseClass: Nested3CaseClass)
+    case class Nested1CaseClass(nested2CaseClass: Nested2CaseClass)
+    case class CaseClass(nested1CaseClass: Nested1CaseClass)
+
+    qualifiedNameOf[CaseClass](_.nested1CaseClass.nested2CaseClass.nested3CaseClass.member) should equal("nested1CaseClass.nested2CaseClass.nested3CaseClass.member")
   }
 
   test("object") {

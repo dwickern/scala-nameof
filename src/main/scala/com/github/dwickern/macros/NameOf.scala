@@ -28,6 +28,20 @@ trait NameOf {
   def nameOf[T](expr: T => Any): String = macro NameOfImpl.nameOf
 
   /**
+    * Obtain a fully qualified identifier name as a constant string.
+    *
+    * This overload can be used to access an instance method without having an instance of the type.
+    *
+    * Example usage:
+    * {{{
+    *   class Pet(val age: Int)
+    *   class Person(val name: String, val pet : Pet)
+    *   nameOf[Person](_.peta.age) => "pet.age"
+    * }}}
+    */
+  def qualifiedNameOf[T](expr: T => Any): String = macro NameOfImpl.qualifiedNameOf
+
+  /**
     * Obtain a type's unqualified name as a constant string.
     *
     * Example usage:
