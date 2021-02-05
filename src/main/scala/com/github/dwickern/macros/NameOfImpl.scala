@@ -18,25 +18,19 @@ object NameOfImpl {
       case _ => c.abort(c.enclosingPosition, s"Unsupported expression: $expr")
     }
 
-    val name = extract(expr.tree).decoded
-    reify {
-      c.Expr[String] { Literal(Constant(name)) }.splice
-    }
+    val name = extract(expr.tree).decodedName.toString
+    c.Expr[String](q"$name")
   }
 
   def nameOfType[T](c: whitebox.Context)(implicit tag: c.WeakTypeTag[T]): c.Expr[String] = {
     import c.universe._
     val name = showRaw(tag.tpe.typeSymbol.name)
-    reify {
-      c.Expr[String] { Literal(Constant(name)) }.splice
-    }
+    c.Expr[String](q"$name")
   }
 
   def qualifiedNameOfType[T](c: whitebox.Context)(implicit tag: c.WeakTypeTag[T]): c.Expr[String] = {
     import c.universe._
     val name = showRaw(tag.tpe.typeSymbol.fullName)
-    reify {
-      c.Expr[String] { Literal(Constant(name)) }.splice
-    }
+    c.Expr[String](q"$name")
   }
 }
