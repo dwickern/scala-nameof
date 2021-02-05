@@ -1,8 +1,11 @@
 package com.github.dwickern.macros
 
-import org.scalatest.{FunSuite, Matchers}
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 
-class NameOfTest extends FunSuite with Matchers {
+import shapeless.test.illTyped
+
+class NameOfTest extends AnyFunSuite with Matchers {
   import NameOf._
 
   test("def") {
@@ -141,14 +144,14 @@ class NameOfTest extends FunSuite with Matchers {
   }
 
   test("error: this") {
-    "nameof(this)" shouldNot compile
+    illTyped(""" nameOf(this) """, "Unsupported expression: this")
   }
 
   test("error: literals") {
-    "nameof(\"test\")" shouldNot compile
-    "nameof(123)" shouldNot compile
-    "nameof(true)" shouldNot compile
-    "nameof(null)" shouldNot compile
-    "nameof()" shouldNot compile
+    illTyped(""" nameOf("test") """, "Unsupported constant expression: \"test\"")
+    illTyped(""" nameOf(123)    """, "Unsupported constant expression: 123")
+    illTyped(""" nameOf(true)   """, "Unsupported constant expression: true")
+    illTyped(""" nameOf(null)   """, "Unsupported constant expression: null")
+    illTyped(""" nameOf()       """, "Unsupported constant expression: \\(\\)")
   }
 }
