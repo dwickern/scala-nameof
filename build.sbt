@@ -25,6 +25,7 @@ lazy val nameof = (projectMatrix in file("."))
       "org.scala-lang" % "scala-reflect" % scalaVersion.value % "provided",
       "org.scala-lang" % "scala-compiler" % scalaVersion.value % "provided",
       "org.scalatest" %%% "scalatest" % "3.2.3" % Test,
+      "com.chuusai" %% "shapeless" % "2.3.3" % Test,
     ),
   )
 

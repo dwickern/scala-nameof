@@ -16,7 +16,7 @@ object NameOfImpl {
       case Apply(func, _) => extract(func)
       case TypeApply(func, _) => extract(func)
       case _ =>
-        c.abort(c.enclosingPosition, s"Unsupported expression: $expr")
+        c.abort(c.enclosingPosition, s"Unsupported expression: ${expr.tree}")
     }
 
     /**
@@ -34,7 +34,7 @@ object NameOfImpl {
         case Apply(func, _) => extractConstant(func)
         case Select(qualifier, _) => extractConstant(qualifier)
         case _ =>
-          c.abort(c.enclosingPosition, s"Unsupported compile-time constant expression: $expr")
+          c.abort(c.enclosingPosition, s"Unsupported constant expression: ${expr.tree}")
       }
 
       extractConstant(cc.callsiteTyper.context.tree).decodedName.toString
