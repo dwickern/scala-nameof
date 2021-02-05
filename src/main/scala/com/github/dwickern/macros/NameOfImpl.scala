@@ -8,17 +8,42 @@ object NameOfImpl {
   def nameOf(c: whitebox.Context)(expr: c.Expr[Any]): c.Expr[String] = {
     import c.universe._
 
-    @tailrec def extract(tree: c.Tree): c.Name = tree match {
-      case Ident(n) => n
-      case Select(_, n) => n
+    @tailrec def extract(tree: c.Tree): String = tree match {
+      case Ident(n) => n.decodedName.toString
+      case Select(_, n) => n.decodedName.toString
       case Function(_, body) => extract(body)
       case Block(_, expr) => extract(expr)
       case Apply(func, _) => extract(func)
       case TypeApply(func, _) => extract(func)
-      case _ => c.abort(c.enclosingPosition, s"Unsupported expression: $expr")
+      case _ =>
+        c.abort(c.enclosingPosition, s"Unsupported expression: $expr")
     }
 
-    val name = extract(expr.tree).decodedName.toString
+    /**
+      * Compile-time constants have already been replaced before this macro runs.
+      * For example, when calling `nameOf(Byte.MaxValue)`, the macro will see `nameOf(127)`.
+      * We use the compiler APIs to solve this problem.
+      */
+    def nameOfConstant(): String = {
+      val cc = c.asInstanceOf[reflect.macros.runtime.Context]
+      import cc.universe._
+      val macroName = cc.macroApplication.symbol.asTerm.name
+
+      @tailrec def extractConstant(tree: cc.Tree): cc.Name = tree match {
+        case Apply(RefTree(_, `macroName`), List(RefTree(_, name))) => name
+        case Apply(func, _) => extractConstant(func)
+        case Select(qualifier, _) => extractConstant(qualifier)
+        case _ =>
+          c.abort(c.enclosingPosition, s"Unsupported compile-time constant expression: $expr")
+      }
+
+      extractConstant(cc.callsiteTyper.context.tree).decodedName.toString
+    }
+
+    val name = expr.tree match {
+      case Literal(Constant(_)) => nameOfConstant()
+      case _ => extract(expr.tree)
+    }
     c.Expr[String](q"$name")
   }
 

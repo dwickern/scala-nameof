@@ -14,4 +14,11 @@ class CustomDslTest extends AnyFunSuite with Matchers {
     def someIdentifier = ???
     CustomDsl.ref(someIdentifier) should equal ("someIdentifier")
   }
+
+  test("compile-time constant") {
+    CustomDsl.ref(Byte.MaxValue) should equal ("MaxValue")
+
+    import CustomDsl._
+    ref(Byte.MaxValue) should equal ("MaxValue")
+  }
 }

@@ -22,9 +22,10 @@ lazy val nameof = (projectMatrix in file("."))
   .jvmPlatform(scalaVersions = Seq(scala213, scala212, scala211))
   .settings(
     libraryDependencies ++= Seq(
-      "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+      "org.scala-lang" % "scala-reflect" % scalaVersion.value % "provided",
+      "org.scala-lang" % "scala-compiler" % scalaVersion.value % "provided",
       "org.scalatest" %%% "scalatest" % "3.2.3" % Test,
-    )
+    ),
   )
 
 ThisBuild / pomExtra := {
