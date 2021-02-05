@@ -40,22 +40,28 @@ class NameOfTest extends AnyFunSuite with Matchers {
   test("function") {
     def func1(x: Int): String = ???
     nameOf(func1 _) should equal ("func1")
+    nameOf(func1(???)) should equal ("func1")
 
     def func2(x: Int, y: Int): String = ???
     nameOf(func2 _) should equal ("func2")
+    nameOf(func2(???, ???)) should equal ("func2")
 
     def func3(x: Double, y: Int, z: String): Boolean = ???
     nameOf(func3 _) should equal ("func3")
+    nameOf(func3(???, ???, ???)) should equal ("func3")
   }
 
   test("curried function") {
     def curried(x: Int)(y: Int): String = ???
     nameOf(curried _) should equal ("curried")
+    nameOf(curried(???) _) should equal ("curried")
+    nameOf(curried(???)(???)) should equal ("curried")
   }
 
   test("generic function") {
     def generic[T](x: Int): String = ???
     nameOf(generic _) should equal ("generic")
+    nameOf(generic(???)) should equal ("generic")
   }
 
   test("instance member") {
