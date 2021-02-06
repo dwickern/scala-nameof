@@ -1,10 +1,11 @@
 package com.github.dwickern.macros
 
-import org.scalatest.{FunSuite, Matchers}
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 
-import scala.language.experimental.macros
+import shapeless.test.illTyped
 
-class NameOfTest extends FunSuite with Matchers {
+class NameOfTest extends AnyFunSuite with Matchers {
   import NameOf._
 
   test("def") {
@@ -39,22 +40,28 @@ class NameOfTest extends FunSuite with Matchers {
   test("function") {
     def func1(x: Int): String = ???
     nameOf(func1 _) should equal ("func1")
+    nameOf(func1(???)) should equal ("func1")
 
     def func2(x: Int, y: Int): String = ???
     nameOf(func2 _) should equal ("func2")
+    nameOf(func2(???, ???)) should equal ("func2")
 
     def func3(x: Double, y: Int, z: String): Boolean = ???
     nameOf(func3 _) should equal ("func3")
+    nameOf(func3(???, ???, ???)) should equal ("func3")
   }
 
   test("curried function") {
     def curried(x: Int)(y: Int): String = ???
     nameOf(curried _) should equal ("curried")
+    nameOf(curried(???) _) should equal ("curried")
+    nameOf(curried(???)(???)) should equal ("curried")
   }
 
   test("generic function") {
     def generic[T](x: Int): String = ???
     nameOf(generic _) should equal ("generic")
+    nameOf(generic(???)) should equal ("generic")
   }
 
   test("instance member") {
@@ -152,14 +159,14 @@ class NameOfTest extends FunSuite with Matchers {
   }
 
   test("error: this") {
-    "nameof(this)" shouldNot compile
+    illTyped(""" nameOf(this) """, "Unsupported expression: this")
   }
 
   test("error: literals") {
-    "nameof(\"test\")" shouldNot compile
-    "nameof(123)" shouldNot compile
-    "nameof(true)" shouldNot compile
-    "nameof(null)" shouldNot compile
-    "nameof()" shouldNot compile
+    illTyped(""" nameOf("test") """, "Unsupported constant expression: \"test\"")
+    illTyped(""" nameOf(123)    """, "Unsupported constant expression: 123")
+    illTyped(""" nameOf(true)   """, "Unsupported constant expression: true")
+    illTyped(""" nameOf(null)   """, "Unsupported constant expression: null")
+    illTyped(""" nameOf()       """, "Unsupported constant expression: \\(\\)")
   }
 }

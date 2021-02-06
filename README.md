@@ -1,6 +1,9 @@
 "nameOf" macro for scala
 ========================
 
+[![Build](https://github.com/dwickern/scala-nameof/workflows/build/badge.svg)](https://github.com/dwickern/scala-nameof/actions)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.dwickern/scala-nameof_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.dwickern/scala-nameof_2.13)
+
 Get the name of an variable, function, class member, or type as a string--at compile-time!
 
 Inspired by the [nameof](https://msdn.microsoft.com/en-us/library/dn986596.aspx) operator in C#
@@ -53,13 +56,20 @@ Without having an instance of the type:
 ```scala
   import com.github.dwickern.macros.NameOf._
 
-  case class Person(name: String, age: Int)
-
+  case class Person(name: String, age: Int) {
+    def sayHello(other: Person) = s"Hello ${other.name}!"
+  }
+  
   println(nameOf[Person](_.age))
 
   // compiles to:
 
   println("age")
+
+  println(nameOf[Person](_.sayHello(???))
+  
+  //compiles to: 
+  println("sayHello")
 ```
 
 Without having an instance of the type for nested case classes:
