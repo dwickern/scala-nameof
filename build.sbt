@@ -2,6 +2,10 @@ import ReleaseTransformations._
 
 ThisBuild / organization := "com.github.dwickern"
 
+lazy val scala213 = "2.13.4"
+lazy val scala212 = "2.12.13"
+lazy val scala211 = "2.11.12"
+
 lazy val root = project.in(file("."))
   .aggregate(nameof.projectRefs: _*)
   .settings(
@@ -12,19 +16,11 @@ lazy val root = project.in(file("."))
     publish / skip := true,
   )
 
-lazy val scala213 = "2.13.4"
-lazy val scala212 = "2.12.13"
-lazy val scala211 = "2.11.12"
-
 lazy val nameof = (projectMatrix in file("."))
   .settings(
     name := "scala-nameof",
     publishTo := sonatypePublishToBundle.value,
     releaseCrossBuild := true,
-  )
-  .jsPlatform(scalaVersions = Seq(scala213, scala212, scala211))
-  .jvmPlatform(scalaVersions = Seq(scala213, scala212, scala211))
-  .settings(
     libraryDependencies ++= Seq(
       "org.scala-lang" % "scala-reflect" % scalaVersion.value % "provided",
       "org.scala-lang" % "scala-compiler" % scalaVersion.value % "provided",
@@ -32,6 +28,8 @@ lazy val nameof = (projectMatrix in file("."))
       "com.chuusai" %% "shapeless" % "2.3.3" % Test,
     ),
   )
+  .jsPlatform(scalaVersions = Seq(scala213, scala212, scala211))
+  .jvmPlatform(scalaVersions = Seq(scala213, scala212, scala211))
 
 ThisBuild / pomExtra := {
   <url>https://github.com/dwickern/scala-nameof</url>
