@@ -153,6 +153,16 @@ class NameOfTest extends AnyFunSuite with Matchers {
     illTyped(""" nameOf(this) """, "Unsupported expression: this")
   }
 
+  test("error: throw") {
+    illTyped(""" nameOf(throw new Exception("test")) """,
+      """Unsupported expression: throw new scala\.`package`\.Exception\("test"\)""")
+  }
+
+  test("error: nested") {
+    def foo = ???
+    illTyped(""" nameOf(nameOf(foo)) """, "Unsupported constant expression: \"foo\"")
+  }
+
   test("error: literals") {
     illTyped(""" nameOf("test") """, "Unsupported constant expression: \"test\"")
     illTyped(""" nameOf(123)    """, "Unsupported constant expression: 123")
