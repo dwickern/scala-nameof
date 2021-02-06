@@ -15,8 +15,9 @@ Usage
 
 Add the library as "provided", because it's only needed during compilation and not at runtime:
 
-    libraryDependencies += "com.github.dwickern" %% "scala-nameof" % "2.0.0" % "provided"
-
+```sbt
+libraryDependencies += "com.github.dwickern" %% "scala-nameof" % "3.0.0" % "provided"
+```
 
 Now you can use `nameOf` to get the name of a variable or class member:
 ```scala
