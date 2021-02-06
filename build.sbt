@@ -5,6 +5,9 @@ ThisBuild / organization := "com.github.dwickern"
 lazy val root = project.in(file("."))
   .aggregate(nameof.projectRefs: _*)
   .settings(
+    // for IntelliJ import: pick one project from the matrix to use
+    nameof.jvm(scala213).settings,
+    target := baseDirectory.value / "target",
     compile / skip := true,
     publish / skip := true,
   )
