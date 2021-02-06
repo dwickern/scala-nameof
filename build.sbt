@@ -4,8 +4,8 @@ ThisBuild / organization := "com.github.dwickern"
 
 lazy val root = project.in(file("."))
   .aggregate(nameof.projectRefs: _*)
-  .disablePlugins(JvmPlugin)
   .settings(
+    compile / skip := true,
     publish / skip := true,
   )
 
@@ -17,6 +17,7 @@ lazy val nameof = (projectMatrix in file("."))
   .settings(
     name := "scala-nameof",
     publishTo := sonatypePublishToBundle.value,
+    releaseCrossBuild := true,
   )
   .jsPlatform(scalaVersions = Seq(scala213, scala212, scala211))
   .jvmPlatform(scalaVersions = Seq(scala213, scala212, scala211))
@@ -51,7 +52,6 @@ ThisBuild / pomExtra := {
     </developers>
 }
 
-releaseCrossBuild := true
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
