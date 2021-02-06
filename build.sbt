@@ -12,6 +12,7 @@ lazy val root = project.in(file("."))
     // for IntelliJ import: pick one project from the matrix to use
     nameof.jvm(scala213).settings,
     target := baseDirectory.value / "target",
+    ideSkipProject := false,
     compile / skip := true,
     publish / skip := true,
   )
@@ -21,6 +22,7 @@ lazy val nameof = (projectMatrix in file("."))
     name := "scala-nameof",
     publishTo := sonatypePublishToBundle.value,
     releaseCrossBuild := true,
+    ideSkipProject := true,
     libraryDependencies ++= Seq(
       "org.scala-lang" % "scala-reflect" % scalaVersion.value % "provided",
       "org.scala-lang" % "scala-compiler" % scalaVersion.value % "provided",
@@ -30,6 +32,8 @@ lazy val nameof = (projectMatrix in file("."))
   )
   .jsPlatform(scalaVersions = Seq(scala213, scala212, scala211))
   .jvmPlatform(scalaVersions = Seq(scala213, scala212, scala211))
+
+Global / excludeLintKeys += ideSkipProject
 
 ThisBuild / pomExtra := {
   <url>https://github.com/dwickern/scala-nameof</url>
