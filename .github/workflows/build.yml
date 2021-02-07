@@ -29,4 +29,4 @@ jobs:
           key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt', '**/plugins.sbt') }}
 
       - name: Run tests
-        run: sbt test
+        run: sbt test mdoc
