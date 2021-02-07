@@ -20,7 +20,7 @@ libraryDependencies += "com.github.dwickern" %% "scala-nameof" % "3.0.0" % "prov
 ```
 
 Now you can use `nameOf` to get the name of a variable or class member:
-```scala
+```scala mdoc:nest
   import com.github.dwickern.macros.NameOf._
 
   case class Person(name: String, age: Int)
@@ -39,7 +39,7 @@ Now you can use `nameOf` to get the name of a variable or class member:
 ```
 
 To get the name of a function:
-```scala
+```scala mdoc:nest
   import com.github.dwickern.macros.NameOf._
 
   def startCalculation(value: Int): Unit = {
@@ -54,7 +54,7 @@ To get the name of a function:
 ```
 
 Without having an instance of the type:
-```scala
+```scala mdoc:nest
   import com.github.dwickern.macros.NameOf._
 
   case class Person(name: String, age: Int) {
@@ -74,7 +74,7 @@ Without having an instance of the type:
 ```
 
 You can also use `nameOfType` to get the unqualified name of a type:
-```scala
+```scala mdoc:nest
   import com.github.dwickern.macros.NameOf._
 
   println(nameOf[java.lang.String])
@@ -85,7 +85,7 @@ You can also use `nameOfType` to get the unqualified name of a type:
 ```
 
 And `qualifiedNameOfType` to get the qualified name:
-```scala
+```scala mdoc:nest
   import com.github.dwickern.macros.NameOf._
 
   println(qualifiedNameOfType[java.lang.String])

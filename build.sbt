@@ -8,13 +8,14 @@ lazy val scala211 = "2.11.12"
 
 lazy val root = project.in(file("."))
   .aggregate(nameof.projectRefs: _*)
+  .enablePlugins(MdocPlugin)
   .settings(
     // for IntelliJ import: pick one project from the matrix to use
     nameof.jvm(scala213).settings,
     target := baseDirectory.value / "target",
     ideSkipProject := false,
-    compile / skip := true,
     publish / skip := true,
+    mdocIn := baseDirectory.value / "README.md",
   )
 
 lazy val nameof = (projectMatrix in file("."))
