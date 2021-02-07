@@ -67,7 +67,7 @@ Without having an instance of the type:
 
   println("age")
 
-  println(nameOf[Person](_.sayHello(???))
+  println(nameOf[Person](_.sayHello(???)))
   
   //compiles to: 
   println("sayHello")
@@ -77,7 +77,7 @@ You can also use `nameOfType` to get the unqualified name of a type:
 ```scala mdoc:nest
   import com.github.dwickern.macros.NameOf._
 
-  println(nameOf[java.lang.String])
+  println(nameOfType[java.lang.String])
 
   // compiles to:
 
