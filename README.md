@@ -29,7 +29,8 @@ Now you can use `nameOf` to get the name of a variable or class member:
     nameOf(person.name) -> person.name,
     nameOf(person.age) -> person.age
   )
-
+```
+``` mdoc:nest
   // compiles to:
 
   def toMap(person: Person) = Map(
@@ -45,7 +46,8 @@ To get the name of a function:
   def startCalculation(value: Int): Unit = {
     println(s"Entered ${nameOf(startCalculation _)}")
   }
-
+```
+``` mdoc:nest
   // compiles to:
 
   def startCalculation(value: Int): Unit = {
@@ -62,14 +64,12 @@ Without having an instance of the type:
   }
   
   println(nameOf[Person](_.age))
-
-  // compiles to:
-
-  println("age")
-
   println(nameOf[Person](_.sayHello(???)))
+```
+``` mdoc:nest
+  // compiles to:
   
-  //compiles to: 
+  println("age")
   println("sayHello")
 ```
 
@@ -78,7 +78,8 @@ You can also use `nameOfType` to get the unqualified name of a type:
   import com.github.dwickern.macros.NameOf._
 
   println(nameOfType[java.lang.String])
-
+```
+``` mdoc:nest
   // compiles to:
 
   println("String")
@@ -89,7 +90,8 @@ And `qualifiedNameOfType` to get the qualified name:
   import com.github.dwickern.macros.NameOf._
 
   println(qualifiedNameOfType[java.lang.String])
-
+```
+``` mdoc:nest
   // compiles to:
 
   println("java.lang.String")
