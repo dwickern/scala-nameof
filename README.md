@@ -32,7 +32,7 @@ def toMap(person: Person) = Map(
   nameOf(person.age) -> person.age
 )
 ```
-``` mdoc:nest
+```scala mdoc:nest
 // compiles to:
 
 def toMap(person: Person) = Map(
@@ -47,7 +47,7 @@ def startCalculation(value: Int): Unit = {
   println("Entered " + nameOf(startCalculation _))
 }
 ```
-``` mdoc:nest
+```scala mdoc:nest
 // compiles to:
 
 def startCalculation(value: Int): Unit = {
@@ -64,7 +64,7 @@ case class Person(name: String, age: Int) {
 println(nameOf[Person](_.age))
 println(nameOf[Person](_.sayHello(???)))
 ```
-``` mdoc:nest
+```scala mdoc:nest
 // compiles to:
 
 println("age")
@@ -75,7 +75,7 @@ You can also use `nameOfType` to get the unqualified name of a type:
 ```scala mdoc:nest
 println(nameOfType[java.lang.String])
 ```
-``` mdoc:nest
+```scala mdoc:nest
 // compiles to:
 
 println("String")
@@ -85,7 +85,7 @@ And `qualifiedNameOfType` to get the qualified name:
 ```scala mdoc:nest
 println(qualifiedNameOfType[java.lang.String])
 ```
-``` mdoc:nest
+```scala mdoc:nest
 // compiles to:
 
 println("java.lang.String")
