@@ -44,14 +44,14 @@ To get the name of a function:
   import com.github.dwickern.macros.NameOf._
 
   def startCalculation(value: Int): Unit = {
-    println(s"Entered ${nameOf(startCalculation _)}")
+    println("Entered " + nameOf(startCalculation _))
   }
 ```
 ``` mdoc:nest
   // compiles to:
 
   def startCalculation(value: Int): Unit = {
-    println(s"Entered startCalculation")
+    println("Entered startCalculation")
   }
 ```
 
