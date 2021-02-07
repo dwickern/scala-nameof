@@ -14,85 +14,81 @@ Usage
 =====
 
 Add the library as "provided", because it's only needed during compilation and not at runtime:
-
 ```sbt
 libraryDependencies += "com.github.dwickern" %% "scala-nameof" % "3.0.0" % "provided"
 ```
 
+And import the package:
+```scala mdoc
+import com.github.dwickern.macros.NameOf._
+```
+
 Now you can use `nameOf` to get the name of a variable or class member:
-```scala
-  import com.github.dwickern.macros.NameOf._
+```scala mdoc:nest
+case class Person(name: String, age: Int)
 
-  case class Person(name: String, age: Int)
+def toMap(person: Person) = Map(
+  nameOf(person.name) -> person.name,
+  nameOf(person.age) -> person.age
+)
+```
+```scala mdoc:nest
+// compiles to:
 
-  def toMap(person: Person) = Map(
-    nameOf(person.name) -> person.name,
-    nameOf(person.age) -> person.age
-  )
-
-  // compiles to:
-
-  def toMap(person: Person) = Map(
-    "name" -> person.name,
-    "age" -> person.age
-  )
+def toMap(person: Person) = Map(
+  "name" -> person.name,
+  "age" -> person.age
+)
 ```
 
 To get the name of a function:
-```scala
-  import com.github.dwickern.macros.NameOf._
+```scala mdoc:nest
+def startCalculation(value: Int): Unit = {
+  println("Entered " + nameOf(startCalculation _))
+}
+```
+```scala mdoc:nest
+// compiles to:
 
-  def startCalculation(value: Int): Unit = {
-    println(s"Entered ${nameOf(startCalculation _)}")
-  }
-
-  // compiles to:
-
-  def startCalculation(value: Int): Unit = {
-    println(s"Entered startCalculation")
-  }
+def startCalculation(value: Int): Unit = {
+  println("Entered startCalculation")
+}
 ```
 
 Without having an instance of the type:
-```scala
-  import com.github.dwickern.macros.NameOf._
+```scala mdoc:nest
+case class Person(name: String, age: Int) {
+  def sayHello(other: Person) = s"Hello ${other.name}!"
+}
 
-  case class Person(name: String, age: Int) {
-    def sayHello(other: Person) = s"Hello ${other.name}!"
-  }
-  
-  println(nameOf[Person](_.age))
+println(nameOf[Person](_.age))
+println(nameOf[Person](_.sayHello(???)))
+```
+```scala mdoc:nest
+// compiles to:
 
-  // compiles to:
-
-  println("age")
-
-  println(nameOf[Person](_.sayHello(???))
-  
-  //compiles to: 
-  println("sayHello")
+println("age")
+println("sayHello")
 ```
 
 You can also use `nameOfType` to get the unqualified name of a type:
-```scala
-  import com.github.dwickern.macros.NameOf._
+```scala mdoc:nest
+println(nameOfType[java.lang.String])
+```
+```scala mdoc:nest
+// compiles to:
 
-  println(nameOf[java.lang.String])
-
-  // compiles to:
-
-  println("String")
+println("String")
 ```
 
 And `qualifiedNameOfType` to get the qualified name:
-```scala
-  import com.github.dwickern.macros.NameOf._
+```scala mdoc:nest
+println(qualifiedNameOfType[java.lang.String])
+```
+```scala mdoc:nest
+// compiles to:
 
-  println(qualifiedNameOfType[java.lang.String])
-
-  // compiles to:
-
-  println("java.lang.String")
+println("java.lang.String")
 ```
 
 
