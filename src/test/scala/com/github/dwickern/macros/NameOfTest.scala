@@ -104,6 +104,15 @@ class NameOfTest extends AnyFunSuite with Matchers {
     qualifiedNameOfType[CaseClass] should equal ("com.github.dwickern.macros.NameOfTest.CaseClass")
   }
 
+  test("nested case class member") {
+    case class Nested3CaseClass(member: String)
+    case class Nested2CaseClass(nested3CaseClass: Nested3CaseClass)
+    case class Nested1CaseClass(nested2CaseClass: Nested2CaseClass)
+    case class CaseClass(nested1CaseClass: Nested1CaseClass)
+
+    qualifiedNameOf[CaseClass](_.nested1CaseClass.nested2CaseClass.nested3CaseClass.member) should equal("nested1CaseClass.nested2CaseClass.nested3CaseClass.member")
+  }
+
   test("object") {
     object SomeObject
     nameOf(SomeObject) should equal ("SomeObject")
