@@ -2,8 +2,9 @@ import ReleaseTransformations._
 
 ThisBuild / organization := "com.github.dwickern"
 
-lazy val scala213 = "2.13.4"
-lazy val scala212 = "2.12.13"
+lazy val scala3 = "3.0.2"
+lazy val scala213 = "2.13.7"
+lazy val scala212 = "2.12.15"
 lazy val scala211 = "2.11.12"
 
 lazy val root = project.in(file("."))
@@ -11,7 +12,7 @@ lazy val root = project.in(file("."))
   .enablePlugins(MdocPlugin)
   .settings(
     // for IntelliJ import: pick one project from the matrix to use
-    nameof.jvm(scala213).settings,
+    nameof.jvm(scala3).settings,
     target := baseDirectory.value / "target",
     ideSkipProject := false,
     publish / skip := true,
@@ -25,14 +26,22 @@ lazy val nameof = (projectMatrix in file("."))
     releaseCrossBuild := true,
     ideSkipProject := true,
     libraryDependencies ++= Seq(
-      "org.scala-lang" % "scala-reflect" % scalaVersion.value % "provided",
-      "org.scala-lang" % "scala-compiler" % scalaVersion.value % "provided",
-      "org.scalatest" %%% "scalatest" % "3.2.3" % Test,
-      "com.chuusai" %% "shapeless" % "2.3.3" % Test,
+      "org.scalatest" %% "scalatest" % "3.2.10" % Test,
+      "javax.annotation" % "javax.annotation-api" % "1.3.1" % Test,
     ),
   )
-  .jsPlatform(scalaVersions = Seq(scala213, scala212, scala211))
-  .jvmPlatform(scalaVersions = Seq(scala213, scala212, scala211))
+  .jvmPlatform(scalaVersions = Seq(scala3), Seq(
+    libraryDependencies ++= Seq(
+      "org.typelevel" %% "shapeless3-test" % "3.0.4" % Test,
+    )
+  ))
+  .jvmPlatform(scalaVersions = Seq(scala213, scala212, scala211), Seq(
+    libraryDependencies ++= Seq(
+      "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided,
+      "org.scala-lang" % "scala-compiler" % scalaVersion.value % Provided,
+      "com.chuusai" %% "shapeless" % "2.3.7" % Test,
+    ),
+  ))
 
 Global / excludeLintKeys += ideSkipProject
 

@@ -3,7 +3,20 @@ package com.github.dwickern.macros
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 
-import shapeless.test.illTyped
+import test.illTyped
+
+class RegularClass()
+case class CaseClass()
+object SomeObject
+object OuterObject {
+  class InnerClass()
+}
+class OuterClass {
+  class InnerClass()
+}
+class GenericClass[T, U]()
+class ClassWithCompanion
+object ClassWithCompanion
 
 class NameOfTest extends AnyFunSuite with Matchers {
   import NameOf._
@@ -15,7 +28,6 @@ class NameOfTest extends AnyFunSuite with Matchers {
 
   test("def()") {
     def localDef() = ???
-    nameOf(localDef) should equal ("localDef")
     nameOf(localDef()) should equal ("localDef")
   }
 
@@ -54,8 +66,6 @@ class NameOfTest extends AnyFunSuite with Matchers {
   test("curried function") {
     def curried(x: Int)(y: Int): String = ???
     nameOf(curried _) should equal ("curried")
-    nameOf(curried(???) _) should equal ("curried")
-    nameOf(curried(???)(???)) should equal ("curried")
   }
 
   test("generic function") {
@@ -80,7 +90,7 @@ class NameOfTest extends AnyFunSuite with Matchers {
   test("class member") {
     class SomeClass(val foobar: String)
     nameOf[SomeClass](_.foobar) should equal ("foobar")
-    nameOf { c: SomeClass => c.foobar } should equal ("foobar")
+    nameOf { (c: SomeClass) => c.foobar } should equal ("foobar")
     nameOf((_: SomeClass).foobar) should equal ("foobar")
   }
 
@@ -92,45 +102,55 @@ class NameOfTest extends AnyFunSuite with Matchers {
   }
 
   test("class") {
-    class RegularClass()
     nameOfType[RegularClass] should equal ("RegularClass")
-    qualifiedNameOfType[RegularClass] should equal ("com.github.dwickern.macros.NameOfTest.RegularClass")
+    qualifiedNameOfType[RegularClass] should equal ("com.github.dwickern.macros.RegularClass")
   }
 
   test("case class") {
-    case class CaseClass()
     nameOf(CaseClass) should equal ("CaseClass")
     nameOfType[CaseClass] should equal ("CaseClass")
-    qualifiedNameOfType[CaseClass] should equal ("com.github.dwickern.macros.NameOfTest.CaseClass")
+    qualifiedNameOfType[CaseClass] should equal ("com.github.dwickern.macros.CaseClass")
+
   }
 
   test("object") {
-    object SomeObject
     nameOf(SomeObject) should equal ("SomeObject")
     nameOfType[SomeObject.type] should equal ("SomeObject")
-    qualifiedNameOfType[SomeObject.type] should equal ("com.github.dwickern.macros.NameOfTest.SomeObject")
+    qualifiedNameOfType[SomeObject.type] should equal ("com.github.dwickern.macros.SomeObject")
+  }
+
+  test("class with companion object") {
+    nameOfType[ClassWithCompanion] should equal ("ClassWithCompanion")
+    nameOfType[ClassWithCompanion.type] should equal ("ClassWithCompanion")
+    qualifiedNameOfType[ClassWithCompanion] should equal ("com.github.dwickern.macros.ClassWithCompanion")
+    qualifiedNameOfType[ClassWithCompanion.type] should equal ("com.github.dwickern.macros.ClassWithCompanion")
   }
 
   test("object/class") {
-    object OuterObject {
-      class InnerClass()
-    }
     nameOfType[OuterObject.InnerClass] should equal ("InnerClass")
-    qualifiedNameOfType[OuterObject.InnerClass] should equal ("com.github.dwickern.macros.NameOfTest.OuterObject.InnerClass")
+    qualifiedNameOfType[OuterObject.InnerClass] should equal ("com.github.dwickern.macros.OuterObject.InnerClass")
   }
 
   test("class/class") {
-    class OuterClass {
-      class InnerClass()
-    }
     nameOfType[OuterClass#InnerClass] should equal ("InnerClass")
-    qualifiedNameOfType[OuterClass#InnerClass] should equal ("com.github.dwickern.macros.NameOfTest.OuterClass.InnerClass")
+    qualifiedNameOfType[OuterClass#InnerClass] should equal ("com.github.dwickern.macros.OuterClass.InnerClass")
+  }
+
+  test("function/class") {
+    class Foo
+    nameOfType[Foo] should equal ("Foo")
+    qualifiedNameOfType[Foo] should equal ("com.github.dwickern.macros.NameOfTest.Foo")
+  }
+
+  test("function/object") {
+    object Foo
+    nameOfType[Foo.type] should equal ("Foo")
+    qualifiedNameOfType[Foo.type] should equal ("com.github.dwickern.macros.NameOfTest.Foo")
   }
 
   test("generic class") {
-    class GenericClass[T, U]()
     nameOfType[GenericClass[_, _]] should equal ("GenericClass")
-    qualifiedNameOfType[GenericClass[_, _]] should equal ("com.github.dwickern.macros.NameOfTest.GenericClass")
+    qualifiedNameOfType[GenericClass[_, _]] should equal ("com.github.dwickern.macros.GenericClass")
   }
 
   test("primitive type") {
