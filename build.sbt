@@ -16,6 +16,7 @@ lazy val root = project.in(file("."))
     target := baseDirectory.value / "target",
     ideSkipProject := false,
     publish / skip := true,
+    releaseCrossBuild := false,
     mdocIn := baseDirectory.value / "README.md",
   )
 
