@@ -16,7 +16,7 @@ Usage
 
 Add the library as "provided", because it's only needed during compilation and not at runtime:
 ```sbt
-libraryDependencies += "com.github.dwickern" %% "scala-nameof" % "3.0.0" % "provided"
+libraryDependencies += "com.github.dwickern" %% "scala-nameof" % "4.0.0" % "provided"
 ```
 
 And import the package:
