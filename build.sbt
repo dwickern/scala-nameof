@@ -2,7 +2,7 @@ import ReleaseTransformations._
 
 ThisBuild / organization := "com.github.dwickern"
 
-lazy val scala3 = "3.6.3"
+lazy val scala3 = "3.3.5"
 lazy val scala213 = "2.13.16"
 lazy val scala212 = "2.12.20"
 
