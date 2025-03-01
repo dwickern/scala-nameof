@@ -1,5 +1,3 @@
-import ReleaseTransformations._
-
 ThisBuild / organization := "com.github.dwickern"
 
 lazy val scala3 = "3.3.5"
@@ -15,15 +13,12 @@ lazy val root = project.in(file("."))
     target := baseDirectory.value / "target",
     ideSkipProject := false,
     publish / skip := true,
-    releaseCrossBuild := false,
     mdocIn := baseDirectory.value / "README.md",
   )
 
 lazy val nameof = (projectMatrix in file("."))
   .settings(
     name := "scala-nameof",
-    publishTo := sonatypePublishToBundle.value,
-    releaseCrossBuild := true,
     ideSkipProject := true,
     libraryDependencies ++= Seq(
       "org.scalatest" %% "scalatest" % "3.2.19" % Test,
@@ -45,38 +40,13 @@ lazy val nameof = (projectMatrix in file("."))
 
 Global / excludeLintKeys += ideSkipProject
 
-ThisBuild / pomExtra := {
-  <url>https://github.com/dwickern/scala-nameof</url>
-    <licenses>
-      <license>
-        <name>MIT license</name>
-        <url>http://www.opensource.org/licenses/mit-license.php</url>
-      </license>
-    </licenses>
-    <scm>
-      <connection>scm:git:github.com/dwickern/scala-nameof.git</connection>
-      <developerConnection>scm:git:git@github.com:dwickern/scala-nameof.git</developerConnection>
-      <url>github.com/dwickern/scala-nameof.git</url>
-    </scm>
-    <developers>
-      <developer>
-        <id>dwickern</id>
-        <name>Derek Wickern</name>
-        <url>https://github.com/dwickern</url>
-      </developer>
-    </developers>
-}
-
-releaseProcess := Seq[ReleaseStep](
-  checkSnapshotDependencies,
-  inquireVersions,
-  runClean,
-  runTest,
-  setReleaseVersion,
-  commitReleaseVersion,
-  tagRelease,
-  releaseStepCommandAndRemaining("+publishSigned"),
-  releaseStepCommand("sonatypeBundleRelease"),
-  setNextVersion,
-  commitNextVersion,
+ThisBuild / homepage := Some(url("https://github.com/dwickern/scala-nameof"))
+ThisBuild / licenses := Seq(License.MIT)
+ThisBuild / developers := List(
+  Developer(
+    id = "dwickern",
+    name = "Derek Wickern",
+    email = "dwickern@gmail.com",
+    url = url("https://github.com/dwickern")
+  )
 )
