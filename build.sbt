@@ -1,5 +1,3 @@
-import ReleaseTransformations._
-
 ThisBuild / organization := "com.github.dwickern"
 
 lazy val scala3 = "3.3.5"
@@ -15,15 +13,12 @@ lazy val root = project.in(file("."))
     target := baseDirectory.value / "target",
     ideSkipProject := false,
     publish / skip := true,
-    releaseCrossBuild := false,
     mdocIn := baseDirectory.value / "README.md",
   )
 
 lazy val nameof = (projectMatrix in file("."))
   .settings(
     name := "scala-nameof",
-    publishTo := sonatypePublishToBundle.value,
-    releaseCrossBuild := true,
     ideSkipProject := true,
     libraryDependencies ++= Seq(
       "org.scalatest" %% "scalatest" % "3.2.19" % Test,
@@ -66,17 +61,3 @@ ThisBuild / pomExtra := {
       </developer>
     </developers>
 }
-
-releaseProcess := Seq[ReleaseStep](
-  checkSnapshotDependencies,
-  inquireVersions,
-  runClean,
-  runTest,
-  setReleaseVersion,
-  commitReleaseVersion,
-  tagRelease,
-  releaseStepCommandAndRemaining("+publishSigned"),
-  releaseStepCommand("sonatypeBundleRelease"),
-  setNextVersion,
-  commitNextVersion,
-)
