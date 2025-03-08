@@ -51,8 +51,8 @@ object NameOfImpl {
     import c.universe._
 
     def extract(tree: c.Tree): List[c.Name] = tree match {
-      case Ident(n) => List(n)
-      case Select(tree, n) => extract(tree) :+ n
+      case Ident(n) => List(n.decodedName)
+      case Select(tree, n) => extract(tree) :+ n.decodedName
       case Function(_, body) => extract(body)
       case Block(_, expr) => extract(expr)
       case Apply(func, _) => extract(func)
