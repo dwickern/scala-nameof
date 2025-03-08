@@ -35,8 +35,8 @@ trait NameOf {
     * Example usage:
     * {{{
     *   class Pet(val age: Int)
-    *   class Person(val name: String, val pet : Pet)
-    *   nameOf[Person](_.peta.age) => "pet.age"
+    *   class Person(val name: String, val pet: Pet)
+    *   nameOf[Person](_.pet.age) => "pet.age"
     * }}}
     */
   def qualifiedNameOf[T](expr: T => Any): String = macro NameOfImpl.qualifiedNameOf
