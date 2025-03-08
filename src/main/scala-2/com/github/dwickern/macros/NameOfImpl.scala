@@ -1,7 +1,7 @@
 package com.github.dwickern.macros
 
 import scala.language.experimental.macros
-import scala.reflect.macros.{blackbox, whitebox}
+import scala.reflect.macros.whitebox
 import scala.annotation.tailrec
 
 object NameOfImpl {
@@ -47,7 +47,7 @@ object NameOfImpl {
     c.Expr[String](q"$name")
   }
 
-  def qualifiedNameOf(c: blackbox.Context)(expr: c.Expr[Any]): c.Expr[String] = {
+  def qualifiedNameOf(c: whitebox.Context)(expr: c.Expr[Any]): c.Expr[String] = {
     import c.universe._
 
     def extractNames(tree: c.Tree): List[c.Name] = {

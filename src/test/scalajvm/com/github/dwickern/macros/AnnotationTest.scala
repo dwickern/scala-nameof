@@ -35,6 +35,18 @@ class AnnotationTest extends AnyFunSuite with Matchers {
     annotation.name should === ("classMember")
   }
 
+  test("qualifiedNameOf") {
+    class C(val foo: Foo)
+    class Foo(val bar: Bar)
+    class Bar(val baz: String)
+
+    @Resource(name = qualifiedNameOf[C](_.foo.bar.baz))
+    class AnnotatedClass
+
+    val annotation = classOf[AnnotatedClass].getDeclaredAnnotation(classOf[Resource])
+    annotation.name should === ("foo.bar.baz")
+  }
+
   test("nameOfType") {
     @Resource(name = nameOfType[AnnotatedClass])
     class AnnotatedClass
