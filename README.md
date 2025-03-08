@@ -73,17 +73,16 @@ println("sayHello")
 ```
 
 Without having an instance of the type for nested case classes:
-```scala
-  import com.github.dwickern.macros.NameOf._
+```scala mdoc:nest
+case class Pet(age: Int)
+case class Person(name: String, pet: Pet)
 
-  case class Pet(age: Int)
-  case class Person(name: String, pet : Pet)
+println(qualifiedNameOf[Person](_.pet.age))
+```
+```scala mdoc:nest
+// compiles to:
 
-  println(qualifiedNameOf[Person](_.pet.age))
-
-  // compiles to:
-
-  println("pet.age")
+println("pet.age")
 ```
 
 You can also use `nameOfType` to get the unqualified name of a type:
