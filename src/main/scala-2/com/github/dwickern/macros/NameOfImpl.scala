@@ -50,32 +50,21 @@ object NameOfImpl {
   def qualifiedNameOf(c: whitebox.Context)(expr: c.Expr[Any]): c.Expr[String] = {
     import c.universe._
 
-    def extractNames(tree: c.Tree): List[c.Name] = {
-      tree.children.headOption match {
-        case Some(child) =>
-          extractNames(child) :+ tree.symbol.name
-        case None =>
-          List(tree.symbol.name)
-      }
-    }
-
-    @tailrec def extract(tree: c.Tree): List[c.Name] = tree match {
+    def extract(tree: c.Tree): List[c.Name] = tree match {
       case Ident(n) => List(n)
-      case Select(tree, n) => extractNames(tree) :+ n
+      case Select(tree, n) => extract(tree) :+ n
       case Function(_, body) => extract(body)
       case Block(_, expr) => extract(expr)
       case Apply(func, _) => extract(func)
       case TypeApply(func, _) => extract(func)
-      case _ => c.abort(c.enclosingPosition, s"Unsupported expression: $expr")
+      case _ => c.abort(c.enclosingPosition, s"Unsupported expression: ${expr.tree}}")
     }
 
     val name = extract(expr.tree)
       // drop sth like x$1
       .drop(1)
       .mkString(".")
-    reify {
-      c.Expr[String] { Literal(Constant(name)) }.splice
-    }
+    c.Expr[String](q"$name")
   }
 
   def nameOfType[T](c: whitebox.Context)(implicit tag: c.WeakTypeTag[T]): c.Expr[String] = {
