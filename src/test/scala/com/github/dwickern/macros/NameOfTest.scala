@@ -74,6 +74,11 @@ class NameOfTest extends AnyFunSuite with Matchers {
     nameOf(generic(???)) should equal ("generic")
   }
 
+  test("identity function") {
+    nameOf[String](x => x) should equal ("x")
+    qualifiedNameOf[String](x => x) should equal ("")
+  }
+
   test("instance member") {
     class SomeClass(val foobar: String)
     val myClass = new SomeClass("")
