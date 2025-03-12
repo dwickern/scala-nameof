@@ -74,6 +74,11 @@ class NameOfTest extends AnyFunSuite with Matchers {
     nameOf(generic(???)) should equal ("generic")
   }
 
+  test("identity function") {
+    nameOf[String](x => x) should equal ("x")
+    qualifiedNameOf[String](x => x) should equal ("")
+  }
+
   test("instance member") {
     class SomeClass(val foobar: String)
     val myClass = new SomeClass("")
@@ -92,6 +97,7 @@ class NameOfTest extends AnyFunSuite with Matchers {
     nameOf[SomeClass](_.foobar) should equal ("foobar")
     nameOf { (c: SomeClass) => c.foobar } should equal ("foobar")
     nameOf((_: SomeClass).foobar) should equal ("foobar")
+    qualifiedNameOf[SomeClass](_.foobar) should equal ("foobar")
   }
 
   test("object member") {
@@ -99,6 +105,7 @@ class NameOfTest extends AnyFunSuite with Matchers {
       lazy val member = ???
     }
     nameOf(SomeObject.member) should equal ("member")
+    qualifiedNameOf[SomeObject.type](_.member) should equal ("member")
   }
 
   test("class") {
@@ -110,7 +117,52 @@ class NameOfTest extends AnyFunSuite with Matchers {
     nameOf(CaseClass) should equal ("CaseClass")
     nameOfType[CaseClass] should equal ("CaseClass")
     qualifiedNameOfType[CaseClass] should equal ("com.github.dwickern.macros.CaseClass")
+  }
 
+  test("nested case class member") {
+    case class Nested3CaseClass(member: String)
+    case class Nested2CaseClass(nested3CaseClass: Nested3CaseClass)
+    case class Nested1CaseClass(nested2CaseClass: Nested2CaseClass)
+    case class CaseClass(nested1CaseClass: Nested1CaseClass)
+
+    qualifiedNameOf[CaseClass](_.nested1CaseClass.nested2CaseClass.nested3CaseClass.member) should equal("nested1CaseClass.nested2CaseClass.nested3CaseClass.member")
+    qualifiedNameOf((cc: CaseClass) => cc.nested1CaseClass.nested2CaseClass) should equal("nested1CaseClass.nested2CaseClass")
+  }
+
+  test("nested Java method calls") {
+    qualifiedNameOf[String](_.length.toLong) should equal("length.toLong")
+    qualifiedNameOf[String](_.length().toString()) should equal("length.toString")
+    qualifiedNameOf[String] { str => str.length().toString } should equal("length.toString")
+  }
+
+  test("nested symbolic members") {
+    class C1(val `multi word name`: C2)
+    class C2(val 你好: C3)
+    class C3(val ??? : String)
+
+    qualifiedNameOf[C1](_.`multi word name`.你好.???) should equal ("multi word name.你好.???")
+  }
+
+  test("nested generic members") {
+    trait T1 {
+      def foo[T]: T2 = ???
+    }
+    trait T2 {
+      def bar[T]: Int = ???
+    }
+
+    qualifiedNameOf[T1](_.foo.bar) should equal ("foo.bar")
+  }
+
+  test("nested function call") {
+    class C1(val c2: C2)
+    class C2(val c3: C3.type)
+    object C3 {
+      def func(x: Int) = ???
+    }
+
+    qualifiedNameOf[C1](_.c2.c3.func _) should equal ("c2.c3.func")
+    qualifiedNameOf[C1](_.c2.c3.func(???)) should equal ("c2.c3.func")
   }
 
   test("object") {
@@ -189,5 +241,7 @@ class NameOfTest extends AnyFunSuite with Matchers {
     illTyped(""" nameOf(true)   """, "Unsupported constant expression: true")
     illTyped(""" nameOf(null)   """, "Unsupported constant expression: null")
     illTyped(""" nameOf()       """, "Unsupported constant expression: \\(\\)")
+    illTyped(""" qualifiedNameOf[String](_ => ()) """)
+    illTyped(""" qualifiedNameOf[String](_ => 3) """)
   }
 }
