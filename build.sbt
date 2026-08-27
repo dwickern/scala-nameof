@@ -1,8 +1,8 @@
 ThisBuild / organization := "com.github.dwickern"
 
-lazy val scala3 = "3.3.5"
-lazy val scala213 = "2.13.16"
-lazy val scala212 = "2.12.20"
+lazy val scala3 = "3.3.8"
+lazy val scala213 = "2.13.18"
+lazy val scala212 = "2.12.21"
 
 lazy val root = project.in(file("."))
   .aggregate(nameof.projectRefs: _*)
@@ -16,27 +16,39 @@ lazy val root = project.in(file("."))
     mdocIn := baseDirectory.value / "README.md",
   )
 
+lazy val scala2Settings = Seq(
+  libraryDependencies ++= Seq(
+    "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided,
+    "org.scala-lang" % "scala-compiler" % scalaVersion.value % Provided,
+    "com.chuusai" %%% "shapeless" % "2.3.12" % Test,
+  ),
+)
+
+lazy val scala3Settings = Seq(
+  libraryDependencies ++= Seq(
+    "org.typelevel" %%% "shapeless3-test" % "3.4.3" % Test,
+  ),
+)
+
+// Java runtime annotations are only testable on the JVM; see src/test/scalajvm
+lazy val jvmSettings = Seq(
+  libraryDependencies ++= Seq(
+    "javax.annotation" % "javax.annotation-api" % "1.3.2" % Test,
+  ),
+)
+
 lazy val nameof = (projectMatrix in file("."))
   .settings(
     name := "scala-nameof",
     ideSkipProject := true,
     libraryDependencies ++= Seq(
-      "org.scalatest" %% "scalatest" % "3.2.19" % Test,
-      "javax.annotation" % "javax.annotation-api" % "1.3.2" % Test,
+      "org.scalatest" %%% "scalatest" % "3.2.19" % Test,
     ),
   )
-  .jvmPlatform(scalaVersions = Seq(scala3), Seq(
-    libraryDependencies ++= Seq(
-      "org.typelevel" %% "shapeless3-test" % "3.4.3" % Test,
-    )
-  ))
-  .jvmPlatform(scalaVersions = Seq(scala213, scala212), Seq(
-    libraryDependencies ++= Seq(
-      "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided,
-      "org.scala-lang" % "scala-compiler" % scalaVersion.value % Provided,
-      "com.chuusai" %% "shapeless" % "2.3.12" % Test,
-    ),
-  ))
+  .jvmPlatform(scalaVersions = Seq(scala3), scala3Settings ++ jvmSettings)
+  .jvmPlatform(scalaVersions = Seq(scala213, scala212), scala2Settings ++ jvmSettings)
+  .jsPlatform(scalaVersions = Seq(scala3), scala3Settings)
+  .jsPlatform(scalaVersions = Seq(scala213, scala212), scala2Settings)
 
 Global / excludeLintKeys += ideSkipProject
 
