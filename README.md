@@ -2,7 +2,7 @@
 ========================
 
 [![Build](https://github.com/dwickern/scala-nameof/workflows/build/badge.svg)](https://github.com/dwickern/scala-nameof/actions)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.dwickern/scala-nameof_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.dwickern/scala-nameof_2.13)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.dwickern/scala-nameof_2.13.svg)](https://central.sonatype.com/artifact/com.github.dwickern/scala-nameof_2.13)
 [![javadoc](https://javadoc.io/badge2/com.github.dwickern/scala-nameof_2.13/javadoc.svg)](https://javadoc.io/doc/com.github.dwickern/scala-nameof_2.13/latest/com/github/dwickern/macros/NameOf.html)
 
 Get the name of an variable, function, class member, or type as a string--at compile-time!
@@ -16,7 +16,7 @@ Usage
 
 Add the library as "provided", because it's only needed during compilation and not at runtime:
 ```sbt
-libraryDependencies += "com.github.dwickern" %% "scala-nameof" % "5.0.0" % "provided"
+libraryDependencies += "com.github.dwickern" %% "scala-nameof" % "6.0.0" % "provided"
 ```
 
 For [Scala.js](https://www.scala-js.org/), use `%%%` instead of `%%` to select the JS artifact.
