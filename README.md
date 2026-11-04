@@ -16,8 +16,10 @@ Usage
 
 Add the library as "provided", because it's only needed during compilation and not at runtime:
 ```sbt
-libraryDependencies += "com.github.dwickern" %% "scala-nameof" % "4.0.0" % "provided"
+libraryDependencies += "com.github.dwickern" %% "scala-nameof" % "5.0.0" % "provided"
 ```
+
+For [Scala.js](https://www.scala-js.org/), use `%%%` instead of `%%` to select the JS artifact.
 
 And import the package:
 ```scala mdoc
@@ -109,9 +111,11 @@ println("java.lang.String")
 Development
 ===========
 
-To run tests for all compilation targets:
+To run tests for all compilation targets (JVM and Scala.js):
 
     sbt +test
+
+The Scala.js tests require [Node.js](https://nodejs.org/) to be installed.
 
 To publish to your local ivy repository:
 

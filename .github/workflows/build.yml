@@ -24,5 +24,10 @@ jobs:
 
       - uses: sbt/setup-sbt@v1
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Run tests
         run: sbt test mdoc
